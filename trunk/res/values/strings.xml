@@ -1,0 +1,23 @@
+<resources>
+
+    <string name="cancel">Cancel</string>
+    <string name="recovery_install">Install In Recovery</string>
+    <string name="normal_install">Install Now</string>
+    <string name="msg_root_na">This application requires ROOT</string>
+    <string name="msg_install_query">If you have a device with /system partition write-protected (e.g. some HTC devices), please use RECOVERY METHOD
+        \n\nIn case recovery method can\'t reboot your device AUTOMATICALLY, please REBOOT TO RECOVERY yourself</string>
+    <string name="msg_reboot_manually">Unable to reboot automatically, please reboot to recovery to finish installation</string>
+    <string name="msg_working">Working…</string>
+    <string name="msg_install_succeeded">Busybox installation succeeded</string>
+    <string name="msg_uninstall_completed">Uninstall completed</string>
+    <string name="error_unsupported_arch">Not supported device architecture</string>
+    <string name="error_write_binary_internal_data">Error: couldn\'t write to app directory, no free space?</string>
+    <string name="error_tmp_busybox">Error: couldn\'t write temp busybox</string>
+    <string name="error_mount_rw">Error: couldn\'t mount system paritition writable</string>
+    <string name="error_write_busybox_to_xbin">Error: couldn\'t write busybox to /system/xbin</string>
+    <string name="error_applets">Error: couldn\'t create busybox applets</string>
+    <string name="error_write_recovery_data">Error: couldn\'t write recovery data, not enough space in cache partition?
+        \nTry clearing cache in recovery first and try again</string>
+    <string name="error_sign_zip">Error: couldn\'t sign recovery zip</string>
+
+</resources>

@@ -1,0 +1,46 @@
+#!/sbin/sh
+# arg 1 is recovery api version, generally 3.
+# arg 2 is the pipe fd, to the recovery binary.
+# communicate with it using the recovery api.
+# arg 3 is the zip file
+
+mount /system
+DIR="$PWD"
+
+echo -n -e 'ui_print Deleting old files...\n' > /proc/self/fd/$2
+echo -n -e "ui_print\n" > /proc/self/fd/$2
+cleanup () {
+    cd "$1"
+    for i in `find ./ -type l`; do
+        if [ "`ls -l $i|grep busybox`" ]; then
+            rm $i
+        fi
+    done
+    rm busybox 2> /dev/null
+    cd "$DIR"
+}
+cleanup /system/bin
+cleanup /system/xbin
+
+echo -n -e 'ui_print Extracting busybox...\n' > /proc/self/fd/$2
+echo -n -e "ui_print\n" > /proc/self/fd/$2
+cp /cache/busybox /system/xbin/busybox
+
+echo -n -e 'ui_print Setting permissions...\n' > /proc/self/fd/$2
+echo -n -e "ui_print\n" > /proc/self/fd/$2
+chown 0:2000 /system/xbin/busybox
+chmod 755 /system/xbin/busybox
+
+echo -n -e 'ui_print Installing busybox applets...\n' > /proc/self/fd/$2
+echo -n -e "ui_print\n" > /proc/self/fd/$2
+cd /system/xbin
+for i in `./busybox --list`; do
+    rm $i
+    ln -s busybox $i
+done
+cd $DIR
+
+rm /cache/busybox.zip
+rm /cache/busybox
+
+umount /system
