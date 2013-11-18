@@ -1,0 +1,30 @@
+#!/sbin/sh
+# arg 1 is recovery api version, generally 3.
+# arg 2 is the pipe fd, to the recovery binary.
+# communicate with it using the recovery api.
+# arg 3 is the zip file
+
+mount /system
+DIR="$PWD"
+
+echo -n -e 'ui_print Deleting old files...\n' > /proc/self/fd/$2
+echo -n -e "ui_print\n" > /proc/self/fd/$2
+cleanup () {
+    cd "$1"
+    for i in `find ./ -type l`; do
+        if [ "`ls -l $i|grep busybox`" ]; then
+            rm $i
+        fi
+    done
+    rm busybox 2> /dev/null
+    cd "$DIR"
+}
+cleanup /system/bin
+cleanup /system/xbin
+
+cd $DIR
+
+rm /cache/busybox.zip
+rm /cache/busybox
+
+umount /system

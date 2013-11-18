@@ -1,0 +1,33 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="me.timos.busyboxonrails"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="11"
+        android:targetSdkVersion="19" />
+
+    <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
+
+    <application
+        android:name="me.timos.busyboxonrails.SbApp"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name" >
+        <activity
+            android:name="me.timos.busyboxonrails.ActivityMain"
+            android:theme="@android:style/Theme.Holo.Light.Dialog" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service android:name="me.timos.busyboxonrails.ServiceNormalInstall" />
+        <service android:name="me.timos.busyboxonrails.ServiceRecoveryInstall" />
+        <service android:name="me.timos.busyboxonrails.ServiceNormalUninstall" />
+        <service android:name="me.timos.busyboxonrails.ServiceRecoveryUninstall" />
+    </application>
+
+</manifest>
