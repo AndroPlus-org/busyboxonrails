@@ -1,11 +1,18 @@
 <resources>
 
     <string name="cancel">Cancel</string>
-    <string name="recovery_install">Install In Recovery</string>
-    <string name="normal_install">Install Now</string>
+    <string name="go">Go</string>
+    <string name="method">Method</string>
+    <string name="cleanup_install">Cleanup &amp; Install</string>
+    <string name="cleanup_only">Cleanup Only</string>
+    <string name="operation">Operation</string>
+    <string name="recovery_install">Recovery Install</string>
+    <string name="normal_install">Normal Install</string>
+    <string name="supported_applets">Supported Applets</string>
+    <string name="not_linked_applets">Not Linked Applets</string>
     <string name="msg_root_na">This application requires ROOT</string>
-    <string name="msg_install_query">If you have a device with /system partition write-protected (e.g. some HTC devices), please use RECOVERY METHOD
-        \n\nIn case recovery method can\'t reboot your device AUTOMATICALLY, please REBOOT TO RECOVERY yourself</string>
+    <string name="msg_busybox_status">Busybox Status</string>
+    <string name="msg_install_query">If you have a device with /system partition write-protected (e.g. some HTC devices), please use RECOVERY METHOD.</string>
     <string name="msg_reboot_manually">Unable to reboot automatically, please reboot to recovery to finish installation</string>
     <string name="msg_working">Working…</string>
     <string name="msg_install_succeeded">Busybox installation succeeded</string>
