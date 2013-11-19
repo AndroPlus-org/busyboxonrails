@@ -1,28 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:divider="?android:attr/dividerHorizontal"
     android:dividerPadding="0dip"
     android:orientation="vertical"
     android:showDividers="middle" >
 
     <ScrollView
-        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:minHeight="64dp" >
+        android:layout_height="0dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_weight="1" >
 
-        <TextView
-            style="?android:attr/textAppearanceMedium"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="8dip"
-            android:paddingEnd="16dip"
-            android:paddingStart="16dip"
-            android:paddingTop="8dip"
-            android:text="@string/msg_install_query" />
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/txtBbStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/msg_busybox_status"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <Button
+                android:id="@+id/btnViewSupportedApplets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/supported_applets" />
+
+            <Button
+                android:id="@+id/btnNotlinkedApplets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/not_linked_applets" />
+
+            <RadioGroup
+                android:id="@+id/radGrpMethod"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checkedButton="@+id/radNormal"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/method"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/msg_install_query"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <RadioButton
+                    android:id="@id/radNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/normal_install" />
+
+                <RadioButton
+                    android:id="@+id/radRecovery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/recovery_install" />
+            </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/radGrpOperation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checkedButton="@+id/radCleanupInstall"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/operation"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@id/radCleanupInstall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cleanup_install" />
+
+                <RadioButton
+                    android:id="@+id/radCleanup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cleanup_only" />
+            </RadioGroup>
+        </LinearLayout>
     </ScrollView>
 
     <LinearLayout
@@ -42,20 +118,8 @@
             android:layout_weight="1"
             android:maxLines="2"
             android:minHeight="48dip"
-            android:onClick="OnCancel"
+            android:onClick="onCancel"
             android:text="@string/cancel"
-            android:textSize="14sp" />
-
-        <Button
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:maxLines="2"
-            android:minHeight="48dip"
-            android:onClick="OnRecoveryInstall"
-            android:text="@string/recovery_install"
             android:textSize="14sp" />
 
         <Button
@@ -66,8 +130,8 @@
             android:layout_weight="1"
             android:maxLines="2"
             android:minHeight="48dip"
-            android:onClick="OnNormalInstall"
-            android:text="@string/normal_install"
+            android:onClick="onGo"
+            android:text="@string/go"
             android:textSize="14sp" />
     </LinearLayout>
 

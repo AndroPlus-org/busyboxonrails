@@ -11,10 +11,10 @@ import kellinwood.security.zipsigner.ZipSigner;
 import me.timos.br.Logcat;
 import android.widget.Toast;
 
-public class ServiceRecoveryInstall extends ServiceBase {
+public class ServiceRecoveryOperation extends ServiceBase {
 
-	public ServiceRecoveryInstall() {
-		super(ServiceRecoveryInstall.class.getName());
+	public ServiceRecoveryOperation() {
+		super(ServiceRecoveryOperation.class.getName());
 	}
 
 	@Override
@@ -26,7 +26,10 @@ public class ServiceRecoveryInstall extends ServiceBase {
 		try {
 			ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(
 					unsignedZip));
-			doEntry(this, zout, R.raw.install_update_binary,
+			doEntry(this,
+					zout,
+					mOpId == R.id.radCleanupInstall ? R.raw.install_update_binary
+							: R.raw.uninstall_update_binary,
 					"META-INF/com/google/android/update-binary");
 			zout.close();
 		} catch (Exception e) {
