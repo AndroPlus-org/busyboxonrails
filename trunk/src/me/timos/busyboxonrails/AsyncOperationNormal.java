@@ -12,7 +12,6 @@ public class AsyncOperationNormal extends AsyncOperation {
 
 	@Override
 	protected void doBusybox(File busybox) {
-		mApp.showToast(R.string.msg_working, Toast.LENGTH_LONG);
 		File tmp = new File("/mnt/asec/busybox");
 		File writableTest = new File("/system/simple_busybox_test");
 		File target = new File("/system/xbin/busybox");
@@ -87,6 +86,7 @@ public class AsyncOperationNormal extends AsyncOperation {
 
 	@Override
 	public void onPostExecute(Void result) {
+		super.onPostExecute(result);
 		((ActivityMain) getActivity()).checkSystemBusybox();
 	}
 

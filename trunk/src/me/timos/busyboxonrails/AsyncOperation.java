@@ -17,6 +17,11 @@ public abstract class AsyncOperation extends
 	protected abstract void doBusybox(File busybox);
 
 	@Override
+	public void onPreExecute() {
+		((ActivityMain) getActivity()).setPreOperation();
+	}
+
+	@Override
 	public Void doInBackground(Integer... params) {
 		mOpId = params[0];
 		mApp = (SbApp) getActivity().getApplication();
@@ -44,6 +49,11 @@ public abstract class AsyncOperation extends
 		return null;
 	}
 
+	@Override
+	public void onPostExecute(Void result) {
+		((ActivityMain) getActivity()).setPostOperation();
+	}
+	
 	protected String getBusyboxResPath() {
 		return mBusyboxResPath;
 	}
