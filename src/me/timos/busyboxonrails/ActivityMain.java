@@ -26,8 +26,6 @@ import android.widget.TextView;
 
 public class ActivityMain extends Activity implements OnClickListener {
 
-	private static final String RUNNING_OPERATION = "running_operation";
-
 	public static class DialogFragmentList extends DialogFragment {
 
 		@Override
@@ -44,10 +42,11 @@ public class ActivityMain extends Activity implements OnClickListener {
 		CHECKING, NO_BB, BB_NOT_LINKED_APPLETS, BB_OK
 	}
 
-	private static final String BB_STATUS = "bb_status";
+	private static final String RUNNING_OPERATION = "running_operation";
 	private static final String BB_INFO = "bb_info";
-	private static final String SUPPORTED_APPLETS = "supported_applets";
+	private static final String BB_STATUS = "bb_status";
 	private static final String NOT_LINKED_APPLETS = "not_linked_applets";
+	private static final String SUPPORTED_APPLETS = "supported_applets";
 
 	private RadioGroup mRadGrpMethod;
 	private RadioGroup mRadGrpOp;
@@ -195,13 +194,14 @@ public class ActivityMain extends Activity implements OnClickListener {
 								Typeface.BOLD), new RelativeSizeSpan(1.4f)));
 	}
 
+	public void setPostOperation() {
+		mBtnGo.setEnabled(true);
+		mBtnGo.setText(R.string.go);
+	}
+
 	public void setPreOperation() {
 		mBtnGo.setEnabled(false);
 		mBtnGo.setText(R.string.msg_working);
 	}
 
-	public void setPostOperation() {
-		mBtnGo.setEnabled(true);
-		mBtnGo.setText(R.string.go);
-	}
 }

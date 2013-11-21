@@ -14,10 +14,10 @@ import android.widget.Toast;
 public class AsyncOperationRecovery extends AsyncOperation {
 
 	@Override
-	protected void doBusybox(File busybox) {
+	protected void doBusybox(File busybox, File reboot) {
 		File unsignedZip = mApp.getFileStreamPath("busybox-unsigned.zip");
 		File signedZip = mApp.getFileStreamPath("busybox-signed.zip");
-		File reboot = new File("/system/bin/reboot");
+		File rebootTmp = new File("/mnt/asec/reboot");
 
 		try {
 			ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(
@@ -48,6 +48,9 @@ public class AsyncOperationRecovery extends AsyncOperation {
 		String ret = shellExec(
 				null,
 				null,
+				String.format("cat \"%s\" > \"%s\"", reboot.getAbsolutePath(),
+						rebootTmp.getAbsolutePath()),
+				String.format("chmod 755 \"%s\"", rebootTmp.getAbsolutePath()),
 				String.format("cat \"%s\" > /cache/busybox.zip",
 						signedZip.getAbsolutePath()),
 				String.format("cat \"%s\" > /cache/busybox",
@@ -66,8 +69,14 @@ public class AsyncOperationRecovery extends AsyncOperation {
 			return;
 		}
 
-		if (reboot.canExecute()) {
-			shellExec(null, null, "stop", "sync", "reboot recovery");
+		if (rebootTmp.canExecute()) {
+			shellExec(
+					null,
+					null,
+					"stop",
+					"sync",
+					String.format("\"%s\" recovery",
+							rebootTmp.getAbsolutePath()));
 		} else {
 			mApp.showToast(R.string.msg_reboot_manually, Toast.LENGTH_LONG);
 		}
