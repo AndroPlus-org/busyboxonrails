@@ -55,6 +55,7 @@ public class ActivityMain extends Activity implements OnClickListener {
 	private TextView mTxtBbInfo;
 	private Button mBtnSupportedApplets;
 	private Button mBtnNotLinkedApplets;
+	private Button mBtnGo;
 	private ENUM_BB_STATUS mBbStatus;
 	private TreeMap<String, String> mBusyboxInfo;
 	private TreeSet<String> mSupportedApplets;
@@ -94,6 +95,7 @@ public class ActivityMain extends Activity implements OnClickListener {
 		mTxtBbInfo = (TextView) findViewById(R.id.txtBbInfo);
 		mBtnSupportedApplets = (Button) findViewById(R.id.btnSupportedApplets);
 		mBtnNotLinkedApplets = (Button) findViewById(R.id.btnNotlinkedApplets);
+		mBtnGo = (Button) findViewById(R.id.btnGo);
 
 		mBtnSupportedApplets.setOnClickListener(this);
 		mBtnNotLinkedApplets.setOnClickListener(this);
@@ -111,6 +113,11 @@ public class ActivityMain extends Activity implements OnClickListener {
 					ENUM_BB_STATUS.values()[savedInstanceState
 							.getInt(BB_STATUS)],
 					bbInfo, supportedApplets, notLinkedApplets);
+			Fragment f = getFragmentManager().findFragmentByTag(
+					RUNNING_OPERATION);
+			if (f != null) {
+				setPreOperation();
+			}
 		}
 	}
 
@@ -119,13 +126,10 @@ public class ActivityMain extends Activity implements OnClickListener {
 	}
 
 	public void onGo(View v) {
-		Fragment f = getFragmentManager().findFragmentByTag(RUNNING_OPERATION);
-		if (f == null) {
-			AsyncOperation op = mRadGrpMethod.getCheckedRadioButtonId() == R.id.radNormal ? new AsyncOperationNormal()
-					: new AsyncOperationRecovery();
-			op.execute(getFragmentManager(), RUNNING_OPERATION,
-					mRadGrpOp.getCheckedRadioButtonId());
-		}
+		AsyncOperation op = mRadGrpMethod.getCheckedRadioButtonId() == R.id.radNormal ? new AsyncOperationNormal()
+				: new AsyncOperationRecovery();
+		op.execute(getFragmentManager(), RUNNING_OPERATION,
+				mRadGrpOp.getCheckedRadioButtonId());
 	}
 
 	@Override
@@ -189,5 +193,15 @@ public class ActivityMain extends Activity implements OnClickListener {
 								getString(statusTextRes)), "##",
 						new ForegroundColorSpan(textColor), new StyleSpan(
 								Typeface.BOLD), new RelativeSizeSpan(1.4f)));
+	}
+
+	public void setPreOperation() {
+		mBtnGo.setEnabled(false);
+		mBtnGo.setText(R.string.msg_working);
+	}
+
+	public void setPostOperation() {
+		mBtnGo.setEnabled(true);
+		mBtnGo.setText(R.string.go);
 	}
 }
