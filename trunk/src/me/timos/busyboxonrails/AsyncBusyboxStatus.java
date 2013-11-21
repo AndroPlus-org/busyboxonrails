@@ -74,6 +74,10 @@ public class AsyncBusyboxStatus extends
 
 	@Override
 	public void onPostExecute(ENUM_BB_STATUS result) {
+		if (result == null) {
+			getActivity().finish();
+			return;
+		}
 		((ActivityMain) getActivity()).setBbStatus(result, mBusyboxInfo,
 				mSupportedApplets, mNotLinkedApplets);
 	}
