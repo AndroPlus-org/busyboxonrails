@@ -14,12 +14,7 @@ public abstract class AsyncOperation extends
 	protected int mOpId;
 	private String mBusyboxResPath;
 
-	protected abstract void doBusybox(File busybox);
-
-	@Override
-	public void onPreExecute() {
-		((ActivityMain) getActivity()).setPreOperation();
-	}
+	protected abstract void doBusybox(File busybox, File reboot);
 
 	@Override
 	public Void doInBackground(Integer... params) {
@@ -37,11 +32,13 @@ public abstract class AsyncOperation extends
 			mBusyboxResPath = "res/raw/busybox_armv7";
 			File busybox = installBinary(mApp, "busybox", R.raw.busybox_armv7,
 					mBusyboxResPath);
-			if (busybox == null) {
+			File reboot = installBinary(mApp, "reboot", R.raw.reboot_armv7,
+					"res/raw/reboot_armv7");
+			if (busybox == null || reboot == null) {
 				mApp.showToast(R.string.error_write_binary_internal_data,
 						Toast.LENGTH_LONG);
 			} else {
-				doBusybox(busybox);
+				doBusybox(busybox, reboot);
 			}
 		} else {
 			mApp.showToast(R.string.error_unsupported_arch, Toast.LENGTH_LONG);
@@ -49,13 +46,18 @@ public abstract class AsyncOperation extends
 		return null;
 	}
 
+	protected String getBusyboxResPath() {
+		return mBusyboxResPath;
+	}
+
 	@Override
 	public void onPostExecute(Void result) {
 		((ActivityMain) getActivity()).setPostOperation();
 	}
-	
-	protected String getBusyboxResPath() {
-		return mBusyboxResPath;
+
+	@Override
+	public void onPreExecute() {
+		((ActivityMain) getActivity()).setPreOperation();
 	}
 
 }

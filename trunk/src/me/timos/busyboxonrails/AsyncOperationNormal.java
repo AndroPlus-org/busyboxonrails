@@ -11,7 +11,7 @@ import android.widget.Toast;
 public class AsyncOperationNormal extends AsyncOperation {
 
 	@Override
-	protected void doBusybox(File busybox) {
+	protected void doBusybox(File busybox, File reboot) {
 		File tmp = new File("/mnt/asec/busybox");
 		File writableTest = new File("/system/simple_busybox_test");
 		File target = new File("/system/xbin/busybox");
