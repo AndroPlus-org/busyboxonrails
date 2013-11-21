@@ -19,59 +19,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/txtBbStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/msg_busybox_status"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <Button
-                android:id="@+id/btnViewSupportedApplets"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/supported_applets" />
-
-            <Button
-                android:id="@+id/btnNotlinkedApplets"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/not_linked_applets" />
-
-            <RadioGroup
-                android:id="@+id/radGrpMethod"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:checkedButton="@+id/radNormal"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/method"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txtInfo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/msg_install_query"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                <RadioButton
-                    android:id="@id/radNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/normal_install" />
-
-                <RadioButton
-                    android:id="@+id/radRecovery"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/recovery_install" />
-            </RadioGroup>
-
             <RadioGroup
                 android:id="@+id/radGrpOperation"
                 android:layout_width="match_parent"
@@ -98,6 +45,67 @@
                     android:layout_height="wrap_content"
                     android:text="@string/cleanup_only" />
             </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/radGrpMethod"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checkedButton="@+id/radNormal"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/method"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lbl_method_notice"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <RadioButton
+                    android:id="@id/radNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/normal" />
+
+                <RadioButton
+                    android:id="@+id/radRecovery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/recovery" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/txtBbStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/txtBbInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btnSupportedApplets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/supported_applets"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btnNotlinkedApplets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/not_linked_applets"
+                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
 
@@ -118,8 +126,8 @@
             android:layout_weight="1"
             android:maxLines="2"
             android:minHeight="48dip"
-            android:onClick="onCancel"
-            android:text="@string/cancel"
+            android:onClick="onExit"
+            android:text="@string/exit"
             android:textSize="14sp" />
 
         <Button

@@ -20,7 +20,7 @@ public class SbApp extends Application {
 		BR.setLogStorage(LogStorageType.BUFFER);
 		BR.setLogBufferSize(65536);
 		BR.setLogTag(LOG_TAG);
-		// TODO: change this to false for release build
+		// TODO: logcat
 		BR.logToLogcat(true);
 
 		BR.init(this);

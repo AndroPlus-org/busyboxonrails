@@ -8,11 +8,7 @@ import java.io.File;
 import me.timos.br.Logcat;
 import android.widget.Toast;
 
-public class ServiceNormalOperation extends ServiceBase {
-
-	public ServiceNormalOperation() {
-		super(ServiceNormalOperation.class.getName());
-	}
+public class AsyncOperationNormal extends AsyncOperation {
 
 	@Override
 	protected void doBusybox(File busybox) {
@@ -56,7 +52,7 @@ public class ServiceNormalOperation extends ServiceBase {
 			shellExec(tmp.getParent(), null, "cat " + tmp + " > " + target,
 					"chmod 755 " + target);
 			if (!target.canExecute()
-					|| !checkFileIntegrity(this, target, getBusyboxResPath())) {
+					|| !checkFileIntegrity(mApp, target, getBusyboxResPath())) {
 				Logcat.e("ERROR WRITE BUSYBOX TO /system/xbin");
 				mApp.showToast(R.string.error_write_busybox_to_xbin,
 						Toast.LENGTH_LONG);
@@ -78,7 +74,7 @@ public class ServiceNormalOperation extends ServiceBase {
 			}
 		} else {
 			Logcat.d("UNINSTALL COMPLETED");
-			mApp.showToast(R.string.msg_uninstall_completed, Toast.LENGTH_LONG);
+			mApp.showToast(R.string.msg_cleanup_completed, Toast.LENGTH_LONG);
 		}
 
 		Logcat.d("Remount /system readonly");
@@ -87,6 +83,11 @@ public class ServiceNormalOperation extends ServiceBase {
 
 		Logcat.d("Remove temp busybox");
 		shellExec(null, null, "rm \"" + tmp + "\"");
+	}
+
+	@Override
+	public void onPostExecute(Void result) {
+		((ActivityMain) getActivity()).checkSystemBusybox();
 	}
 
 }

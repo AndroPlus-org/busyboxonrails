@@ -11,22 +11,18 @@ import kellinwood.security.zipsigner.ZipSigner;
 import me.timos.br.Logcat;
 import android.widget.Toast;
 
-public class ServiceRecoveryOperation extends ServiceBase {
-
-	public ServiceRecoveryOperation() {
-		super(ServiceRecoveryOperation.class.getName());
-	}
+public class AsyncOperationRecovery extends AsyncOperation {
 
 	@Override
 	protected void doBusybox(File busybox) {
-		File unsignedZip = getFileStreamPath("busybox-unsigned.zip");
-		File signedZip = getFileStreamPath("busybox-signed.zip");
+		File unsignedZip = mApp.getFileStreamPath("busybox-unsigned.zip");
+		File signedZip = mApp.getFileStreamPath("busybox-signed.zip");
 		File reboot = new File("/system/bin/reboot");
 
 		try {
 			ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(
 					unsignedZip));
-			doEntry(this,
+			doEntry(mApp,
 					zout,
 					mOpId == R.id.radCleanupInstall ? R.raw.install_update_binary
 							: R.raw.uninstall_update_binary,
@@ -71,9 +67,7 @@ public class ServiceRecoveryOperation extends ServiceBase {
 		}
 
 		if (reboot.canExecute()) {
-			// TODO
-			// shellExec(null, null, "stop", "sync", "reboot recovery");
-			Logcat.d("OKOKOKKOKOKKO");
+			shellExec(null, null, "stop", "sync", "reboot recovery");
 		} else {
 			mApp.showToast(R.string.msg_reboot_manually, Toast.LENGTH_LONG);
 		}

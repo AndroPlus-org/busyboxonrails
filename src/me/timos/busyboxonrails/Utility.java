@@ -234,4 +234,10 @@ public class Utility {
 			return "";
 		}
 	}
+
+	@SuppressWarnings({ "unchecked" })
+	public static <T> T uncheckedCast(Object obj) {
+		return (T) obj;
+	}
+
 }
