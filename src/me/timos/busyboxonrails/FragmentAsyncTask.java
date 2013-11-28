@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.AsyncTask;
+import android.os.Bundle;
 
 public abstract class FragmentAsyncTask<Params, Progress, Result> extends
 		Fragment {
@@ -57,8 +58,9 @@ public abstract class FragmentAsyncTask<Params, Progress, Result> extends
 	public abstract Result doInBackground(Params... params);
 
 	public void doPostExecute() {
-		Fragment f = getFragmentManager().findFragmentByTag(mTag);
-		if (f != null) {
+		Fragment f;
+		if (getFragmentManager() != null
+				&& (f = getFragmentManager().findFragmentByTag(mTag)) != null) {
 			FragmentTransaction ft = getFragmentManager().beginTransaction();
 			ft.remove(f);
 			ft.commit();
@@ -89,8 +91,8 @@ public abstract class FragmentAsyncTask<Params, Progress, Result> extends
 
 	@Override
 	public void onPause() {
-		super.onPause();
 		mIsPaused = true;
+		super.onPause();
 	}
 
 	public void onPostExecute(Result result) {
@@ -109,6 +111,12 @@ public abstract class FragmentAsyncTask<Params, Progress, Result> extends
 		if (mIsDone) {
 			doPostExecute();
 		}
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		mIsPaused = true;
+		super.onSaveInstanceState(outState);
 	}
 
 	public void publishProgress(Progress... values) {
