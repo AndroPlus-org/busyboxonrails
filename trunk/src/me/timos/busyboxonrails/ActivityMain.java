@@ -172,7 +172,7 @@ public class ActivityMain extends Activity implements OnClickListener {
 			setBbStatusText(R.string.bb_not_found, 0xFFCC0000);
 			break;
 		case BB_NOT_LINKED_APPLETS:
-			setBbStatusText(R.string.bb_installed, 0xFFFF8800);
+			setBbStatusText(R.string.bb_missing_applets, 0xFFFF8800);
 			setBbInfoText();
 			mBtnNotLinkedApplets.setVisibility(View.VISIBLE);
 			mBtnSupportedApplets.setVisibility(View.VISIBLE);
