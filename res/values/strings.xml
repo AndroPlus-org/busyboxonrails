@@ -20,7 +20,7 @@
     <string name="msg_cleanup_completed">Cleanup completed</string>
     <string name="bb_checking">Checking…</string>
     <string name="bb_not_found">Not found</string>
-    <string name="bb_installed">Installed</string>
+    <string name="bb_missing_applets">Missing applets</string>
     <string name="bb_ok">OK</string>
     <string name="error_unsupported_arch">Not supported device architecture</string>
     <string name="error_write_binary_internal_data">Error: couldn\'t write to app directory, no free space?</string>

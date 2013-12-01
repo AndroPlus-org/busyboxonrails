@@ -28,8 +28,8 @@ public class AsyncOperationNormal extends AsyncOperation {
 
 		Logcat.d("Remount /system writable");
 		shellExec(tmp.getParent(), null,
-				"./busybox mount -o remount,rw /system", "touch "
-						+ writableTest);
+				"./busybox mount -o remount,rw /system",
+				"mount -o remount,rw /system", "touch " + writableTest);
 		if (!writableTest.exists()) {
 			Logcat.e("ERROR MOUNT");
 			mApp.showToast(R.string.error_mount_rw, Toast.LENGTH_LONG);
@@ -48,7 +48,9 @@ public class AsyncOperationNormal extends AsyncOperation {
 
 		if (mOpId == R.id.radCleanupInstall) {
 			Logcat.d("Write busybox to /system/xbin");
-			shellExec(tmp.getParent(), null, "cat " + tmp + " > " + target,
+			shellExec(tmp.getParent(), null, "./busybox mkdir -p /system/xbin",
+					"./busybox chown 0.2000 /system/xbin",
+					"chmod 755 /system/xbin", "cat " + tmp + " > " + target,
 					"chmod 755 " + target);
 			if (!target.canExecute()
 					|| !checkFileIntegrity(mApp, target, getBusyboxResPath())) {
@@ -78,7 +80,8 @@ public class AsyncOperationNormal extends AsyncOperation {
 
 		Logcat.d("Remount /system readonly");
 		shellExec(tmp.getParent(), null, "rm " + writableTest + " " + tmp,
-				"sync", "./busybox mount -o remount,ro /system");
+				"sync", "./busybox mount -o remount,ro /system",
+				"mount -o remount,ro /system");
 
 		Logcat.d("Remove temp busybox");
 		shellExec(null, null, "rm \"" + tmp + "\"");
