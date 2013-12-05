@@ -6,11 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.FileChannel;
-import java.nio.channels.ReadableByteChannel;
-import java.nio.channels.WritableByteChannel;
 import java.util.Arrays;
 import java.util.zip.CRC32;
 import java.util.zip.CheckedInputStream;
@@ -46,12 +41,13 @@ public class Utility {
 		}
 	}
 
-	public static void copyStream(InputStream input, OutputStream output)
+	private static void copyStream(InputStream input, OutputStream output)
 			throws IOException {
-		final ReadableByteChannel inputChannel = Channels.newChannel(input);
-		final WritableByteChannel outputChannel = Channels.newChannel(output);
-		// copy the channels
-		fastChannelCopy(inputChannel, outputChannel);
+		byte[] buff = new byte[4096];
+		int len;
+		while ((len = input.read(buff)) != -1) {
+			output.write(buff, 0, len);
+		}
 	}
 
 	public static void doEntry(Context context, ZipOutputStream zout,
@@ -66,27 +62,7 @@ public class Utility {
 		}
 	}
 
-	public static void fastChannelCopy(final ReadableByteChannel src,
-			final WritableByteChannel dest) throws IOException {
-		final ByteBuffer buffer = ByteBuffer.allocateDirect(1 << 17);
-		while (src.read(buffer) != -1) {
-			// prepare the buffer to be drained
-			buffer.flip();
-			// write to the channel, may block
-			dest.write(buffer);
-			// If partial transfer, shift remainder down
-			// If buffer is empty, same as doing clear()
-			buffer.compact();
-		}
-		// EOF will leave buffer in fill state
-		buffer.flip();
-		// make sure the buffer is fully drained.
-		while (buffer.hasRemaining()) {
-			dest.write(buffer);
-		}
-	}
-
-	public static long getFileCrc(File file) {
+	private static long getFileCrc(File file) {
 		CRC32 checkSummer = new CRC32();
 		CheckedInputStream cis = null;
 		try {
@@ -127,19 +103,15 @@ public class Utility {
 			}
 		}
 		InputStream ris = context.getResources().openRawResource(resId);
-		ReadableByteChannel rc = Channels.newChannel(ris);
 		try {
 			FileOutputStream fos = new FileOutputStream(file);
-			FileChannel fc = fos.getChannel();
 			try {
-				long size = ris.available();
-				for (long pos = 0; pos < size;) {
-					pos += fc.transferFrom(rc, pos, size - pos);
-				}
+				copyStream(ris, fos);
 			} finally {
 				fos.flush();
 				fos.getFD().sync();
 				fos.close();
+				ris.close();
 			}
 			Logcat.d("Write binary " + name);
 			return file;
