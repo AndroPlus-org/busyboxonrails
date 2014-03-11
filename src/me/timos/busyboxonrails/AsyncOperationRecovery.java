@@ -57,8 +57,10 @@ public class AsyncOperationRecovery extends AsyncOperation {
 						busybox.getAbsolutePath()),
 				"mkdir -p /cache/recovery",
 				"echo '--update_package=CACHE:busybox.zip' > /cache/recovery/command",
+				"echo 'install /cache/busybox.zip' > /cache/recovery/openrecoveryscript",
 				"chmod 644 /cache/busybox.zip",
 				"chmod 644 /cache/recovery/command",
+				"chmod 644 /cache/recovery/openrecoveryscript",
 				"sync",
 				"if [ -f /cache/busybox.zip ] && [ -f /cache/busybox ] && [ -f /cache/recovery/command ]; then",
 				"echo OK", "fi");
