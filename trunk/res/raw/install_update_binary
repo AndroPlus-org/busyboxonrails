@@ -42,5 +42,7 @@ cd $DIR
 
 rm /cache/busybox.zip
 rm /cache/busybox
+rm /cache/recovery/command &> /dev/null
+rm /cache/recovery/openrecoveryscript &> /dev/null
 
 umount /system
