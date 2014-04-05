@@ -40,6 +40,19 @@ public abstract class AsyncOperation extends
 			} else {
 				doBusybox(busybox, reboot);
 			}
+		} else if (arch.contains("86")) {
+			Logcat.d("---x86---");
+			mBusyboxResPath = "res/raw/busybox_x86";
+			File busybox = installBinary(mApp, "busybox", R.raw.busybox_x86,
+					mBusyboxResPath);
+			File reboot = installBinary(mApp, "reboot", R.raw.reboot_x86,
+					"res/raw/reboot_x86");
+			if (busybox == null || reboot == null) {
+				mApp.showToast(R.string.error_write_binary_internal_data,
+						Toast.LENGTH_LONG);
+			} else {
+				doBusybox(busybox, reboot);
+			}
 		} else {
 			mApp.showToast(R.string.error_unsupported_arch, Toast.LENGTH_LONG);
 		}
