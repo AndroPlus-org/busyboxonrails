@@ -12,14 +12,14 @@
     <string name="not_linked_applets">Not Linked Applets</string>
     <string name="lbl_system_status">System Status: ##%1$s##</string>
     <string name="lbl_busybox_info">Busybox found at:\n##%1$s##</string>
-    <string name="lbl_method_notice">If you have a device with /system partition write-protected (e.g. some HTC devices), please use RECOVERY METHOD.</string>
+    <string name="lbl_method_notice">If you have a device with /system partition write-protected (e.g. some HTC devices), please use RECOVERY METHOD. This method requires a custom recovery like CWM, TWRP,… and it will reboot your device when you press on Go.</string>
     <string name="msg_root_na">This application requires ROOT</string>
     <string name="msg_reboot_manually">Unable to reboot automatically, please reboot to recovery to finish installation</string>
     <string name="msg_working">Working…</string>
     <string name="msg_install_succeeded">Busybox installation succeeded</string>
     <string name="msg_cleanup_completed">Cleanup completed</string>
     <string name="bb_checking">Checking…</string>
-    <string name="bb_not_found">Not found</string>
+    <string name="bb_not_found">Not found. Press on Go to install</string>
     <string name="bb_missing_applets">Missing applets</string>
     <string name="bb_ok">OK</string>
     <string name="error_unsupported_arch">Not supported device architecture</string>
