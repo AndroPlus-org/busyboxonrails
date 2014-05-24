@@ -1,7 +1,8 @@
 <resources>
 
     <string name="exit">Exit</string>
-    <string name="go">Go</string>
+    <string name="install">Install</string>
+    <string name="cleanup">Cleanup</string>
     <string name="operation">Operation</string>
     <string name="cleanup_install">Cleanup &amp; Install</string>
     <string name="cleanup_only">Cleanup Only</string>
@@ -19,8 +20,8 @@
     <string name="msg_install_succeeded">Busybox installation succeeded</string>
     <string name="msg_cleanup_completed">Cleanup completed</string>
     <string name="bb_checking">Checking…</string>
-    <string name="bb_not_found">Not found, press Go</string>
-    <string name="bb_missing_applets">Missing applets, press Go</string>
+    <string name="bb_not_found">Not found</string>
+    <string name="bb_missing_applets">Missing applets</string>
     <string name="bb_ok">OK</string>
     <string name="error_unsupported_arch">Not supported device architecture</string>
     <string name="error_write_binary_internal_data">Error: couldn\'t write to app directory, no free space?</string>

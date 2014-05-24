@@ -22,9 +22,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
-public class ActivityMain extends Activity implements OnClickListener {
+public class ActivityMain extends Activity implements OnClickListener,
+		OnCheckedChangeListener {
 
 	public static class DialogFragmentList extends DialogFragment {
 
@@ -67,6 +69,18 @@ public class ActivityMain extends Activity implements OnClickListener {
 	}
 
 	@Override
+	public void onCheckedChanged(RadioGroup group, int checkedId) {
+		switch (checkedId) {
+		case R.id.radCleanupInstall:
+			mBtnGo.setText(R.string.install);
+			break;
+		case R.id.radCleanup:
+			mBtnGo.setText(R.string.cleanup);
+			break;
+		}
+	}
+
+	@Override
 	public void onClick(View v) {
 		Bundle args = new Bundle();
 		if (v == mBtnSupportedApplets) {
@@ -98,6 +112,7 @@ public class ActivityMain extends Activity implements OnClickListener {
 
 		mBtnSupportedApplets.setOnClickListener(this);
 		mBtnNotLinkedApplets.setOnClickListener(this);
+		mRadGrpOp.setOnCheckedChangeListener(this);
 
 		if (savedInstanceState == null) {
 			checkSystemBusybox();
@@ -196,7 +211,7 @@ public class ActivityMain extends Activity implements OnClickListener {
 
 	public void setPostOperation() {
 		mBtnGo.setEnabled(true);
-		mBtnGo.setText(R.string.go);
+		onCheckedChanged(mRadGrpOp, mRadGrpOp.getCheckedRadioButtonId());
 	}
 
 	public void setPreOperation() {
