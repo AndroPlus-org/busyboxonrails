@@ -1,11 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="me.timos.busyboxonrails"
-    android:versionCode="17"
-    android:versionName="2.4.17" >
+    android:versionCode="19"
+    android:versionName="2.5.19" >
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="19" />
+        android:targetSdkVersion="20" />
 
     <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
 
