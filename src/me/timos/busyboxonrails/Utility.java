@@ -21,6 +21,7 @@ import android.text.style.CharacterStyle;
 
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
+import com.stericson.RootTools.execution.Shell.ShellContext;
 
 public class Utility {
 
@@ -114,6 +115,7 @@ public class Utility {
 				ris.close();
 			}
 			Logcat.d("Write binary " + name);
+			file.setExecutable(true, false);
 			return file;
 		} catch (Exception e) {
 			Logcat.e("Couldn't write " + file, e);
@@ -129,7 +131,7 @@ public class Utility {
 	 * For example, {@code setSpanBetweenTokens("Hello ##world##!", "##",
 	 * new ForegroundColorSpan(0xFFFF0000));} will return a CharSequence
 	 * {@code "Hello world!"} with {@code world} in red.
-	 * 
+	 *
 	 * @param text
 	 *            The text, with the tokens, to adjust.
 	 * @param token
@@ -140,8 +142,8 @@ public class Utility {
 	 *            send the same two instances of this parameter, otherwise the
 	 *            second call will remove the original span.
 	 * @return A Spannable CharSequence with the new style applied.
-	 * 
-	 * @see http 
+	 *
+	 * @see http
 	 *      ://developer.android.com/reference/android/text/style/CharacterStyle
 	 *      .html
 	 */
@@ -193,7 +195,7 @@ public class Utility {
 				}
 			};
 
-			RootTools.getShell(true).add(cc);
+			RootTools.getShell(true, ShellContext.UNTRUSTED_APP).add(cc);
 			synchronized (cc) {
 				try {
 					cc.wait();

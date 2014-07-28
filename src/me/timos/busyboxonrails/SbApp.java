@@ -45,6 +45,7 @@ public class SbApp extends Application {
 	public void showToast(final String toast, final int duration) {
 		mHandler.post(new Runnable() {
 
+			@Override
 			public void run() {
 				if (mToast == null) {
 					mToast = Toast.makeText(SbApp.this, toast, duration);

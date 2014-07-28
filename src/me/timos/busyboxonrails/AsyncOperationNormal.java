@@ -12,40 +12,39 @@ public class AsyncOperationNormal extends AsyncOperation {
 
 	@Override
 	protected void doBusybox(File busybox, File reboot) {
-		File tmp = new File("/mnt/asec/busybox");
+		File tmp = new File("/sbin/busybox");
 		File writableTest = new File("/system/simple_busybox_test");
 		File target = new File("/system/xbin/busybox");
 		File lastApplet = new File("/system/xbin/zcat");
-
-		Logcat.d("Write temp busybox");
-		shellExec(null, null, "cat \"" + busybox + "\" > " + tmp, "chmod 755 "
-				+ tmp);
-		if (!tmp.canExecute()) {
-			Logcat.e("ERROR CREATE TEMP BUSYBOX");
-			mApp.showToast(R.string.error_tmp_busybox, Toast.LENGTH_LONG);
-			return;
-		}
+		String ret;
 
 		Logcat.d("Remount /system writable");
-		shellExec(tmp.getParent(), null,
-				"./busybox mount -o remount,rw /system",
-				"mount -o remount,rw /system", "touch " + writableTest);
+		shellExec(tmp.getParent(), null, "mount -o remount,rw /system",
+				"mount -o remount,rw /", "touch " + writableTest);
 		if (!writableTest.exists()) {
 			Logcat.e("ERROR MOUNT");
 			mApp.showToast(R.string.error_mount_rw, Toast.LENGTH_LONG);
 			return;
 		}
 
+		Logcat.d("Write temp busybox");
+		ret = shellExec(null, null, "cat \"" + busybox + "\" > " + tmp,
+				"chmod 755 " + tmp, "ls -l " + tmp);
+		if (!ret.startsWith("-rwxr-xr-x")) {
+			Logcat.e("ERROR CREATE TEMP BUSYBOX");
+			mApp.showToast(R.string.error_tmp_busybox, Toast.LENGTH_LONG);
+			return;
+		}
+
 		Logcat.d("Cleanup /system/bin and /system/xbin of previous busybox installations");
-		shellExec(tmp.getParent(), null,
+		ret = shellExec(tmp.getParent(), null,
 				"for i in `./busybox find /system/bin -type l`; do",
 				"if [ \"`./busybox ls -l $i|./busybox grep busybox`\" ]; then",
 				"echo $i", "rm $i", "fi", "done", "rm /system/bin/busybox");
-		shellExec(tmp.getParent(), null,
+		ret = shellExec(tmp.getParent(), null,
 				"for i in `./busybox find /system/xbin -type l`; do",
 				"if [ \"`./busybox ls -l $i|./busybox grep busybox`\" ]; then",
 				"echo $i", "rm $i", "fi", "done", "rm /system/xbin/busybox");
-
 		if (mOpId == R.id.radCleanupInstall) {
 			Logcat.d("Write busybox to /system/xbin");
 			shellExec(tmp.getParent(), null, "./busybox mkdir -p /system/xbin",
@@ -61,7 +60,7 @@ public class AsyncOperationNormal extends AsyncOperation {
 			}
 
 			Logcat.d("Create applets");
-			String ret = shellExec(target.getParent(), null,
+			ret = shellExec(target.getParent(), null,
 					"for i in `./busybox --list`; do", "rm $i",
 					"./busybox ln -s busybox $i", "done", "./busybox ls -l "
 							+ lastApplet);
@@ -78,13 +77,9 @@ public class AsyncOperationNormal extends AsyncOperation {
 			mApp.showToast(R.string.msg_cleanup_completed, Toast.LENGTH_LONG);
 		}
 
-		Logcat.d("Remount /system readonly");
+		Logcat.d("Cleanup and remount /system readonly");
 		shellExec(tmp.getParent(), null, "rm " + writableTest + " " + tmp,
-				"sync", "./busybox mount -o remount,ro /system",
-				"mount -o remount,ro /system");
-
-		Logcat.d("Remove temp busybox");
-		shellExec(null, null, "rm \"" + tmp + "\"");
+				"sync", "mount -o remount,ro /system", "mount -o remount,ro /");
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import java.util.zip.ZipOutputStream;
 
 import kellinwood.security.zipsigner.ZipSigner;
 import me.timos.br.Logcat;
+import android.os.SystemClock;
 import android.widget.Toast;
 
 public class AsyncOperationRecovery extends AsyncOperation {
@@ -17,7 +18,7 @@ public class AsyncOperationRecovery extends AsyncOperation {
 	protected void doBusybox(File busybox, File reboot) {
 		File unsignedZip = mApp.getFileStreamPath("busybox-unsigned.zip");
 		File signedZip = mApp.getFileStreamPath("busybox-signed.zip");
-		File rebootTmp = new File("/mnt/asec/reboot");
+		File rebootTmp = new File("/sbin/reboot");
 
 		try {
 			ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(
@@ -48,6 +49,7 @@ public class AsyncOperationRecovery extends AsyncOperation {
 		String ret = shellExec(
 				null,
 				null,
+				"mount -o remount,rw /",
 				String.format("cat \"%s\" > \"%s\"", reboot.getAbsolutePath(),
 						rebootTmp.getAbsolutePath()),
 				String.format("chmod 755 \"%s\"", rebootTmp.getAbsolutePath()),
@@ -71,17 +73,9 @@ public class AsyncOperationRecovery extends AsyncOperation {
 			return;
 		}
 
-		if (rebootTmp.canExecute()) {
-			shellExec(
-					null,
-					null,
-					"stop",
-					"sync",
-					String.format("\"%s\" recovery",
-							rebootTmp.getAbsolutePath()));
-		} else {
-			mApp.showToast(R.string.msg_reboot_manually, Toast.LENGTH_LONG);
-		}
+		shellExec(null, null, "stop", "sync", "/system/bin/reboot recovery",
+				String.format("\"%s\" recovery", rebootTmp.getAbsolutePath()));
+		SystemClock.sleep(100);
+		mApp.showToast(R.string.msg_reboot_manually, Toast.LENGTH_LONG);
 	}
-
 }
