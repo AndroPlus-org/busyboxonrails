@@ -37,14 +37,18 @@ public class AsyncOperationNormal extends AsyncOperation {
 		}
 
 		Logcat.d("Cleanup /system/bin and /system/xbin of previous busybox installations");
-		ret = shellExec(tmp.getParent(), null,
-				"for i in `./busybox find /system/bin -type l`; do",
-				"if [ \"`./busybox ls -l $i|./busybox grep busybox`\" ]; then",
-				"echo $i", "rm $i", "fi", "done", "rm /system/bin/busybox");
-		ret = shellExec(tmp.getParent(), null,
-				"for i in `./busybox find /system/xbin -type l`; do",
-				"if [ \"`./busybox ls -l $i|./busybox grep busybox`\" ]; then",
-				"echo $i", "rm $i", "fi", "done", "rm /system/xbin/busybox");
+		ret = shellExec(
+				tmp.getParent(),
+				null,
+				"for i in /system/bin/*; do",
+				"if [ -L \"$i\" ] && [ \"`./busybox ls -l \\\"$i\\\"|./busybox grep busybox`\" ]; then",
+				"echo $i", "rm \"$i\"", "fi", "done", "rm /system/bin/busybox");
+		ret = shellExec(
+				tmp.getParent(),
+				null,
+				"for i in /system/xbin/*; do",
+				"if [ -L \"$i\" ] && [ \"`./busybox ls -l \\\"$i\\\"|./busybox grep busybox`\" ]; then",
+				"echo $i", "rm \"$i\"", "fi", "done", "rm /system/xbin/busybox");
 		if (mOpId == R.id.radCleanupInstall) {
 			Logcat.d("Write busybox to /system/xbin");
 			shellExec(tmp.getParent(), null, "./busybox mkdir -p /system/xbin",
@@ -61,10 +65,8 @@ public class AsyncOperationNormal extends AsyncOperation {
 
 			Logcat.d("Create applets");
 			ret = shellExec(target.getParent(), null,
-					"for i in `./busybox --list`; do", "rm $i",
-					"./busybox ln -s busybox $i", "done", "./busybox ls -l "
-							+ lastApplet);
-			if (ret.endsWith("zcat -> busybox")) {
+					"./busybox --install -s .", "./busybox ls -l " + lastApplet);
+			if (ret.endsWith("zcat -> /system/xbin/busybox")) {
 				Logcat.d("INSTALLATION SUCCEEDED");
 				mApp.showToast(R.string.msg_install_succeeded,
 						Toast.LENGTH_LONG);
