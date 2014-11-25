@@ -33,7 +33,7 @@ public class AsyncBusyboxStatus extends
 			return null;
 		}
 
-		String[] paths = System.getenv("PATH").split(":");
+		String[] paths = new String[] { "/system/bin", "/system/xbin" };
 		for (String dir : paths) {
 			File busybox = new File(dir, "busybox");
 			if (busybox.canExecute()) {
