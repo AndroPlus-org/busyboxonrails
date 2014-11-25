@@ -12,20 +12,10 @@ public class AsyncOperationNormal extends AsyncOperation {
 
 	@Override
 	protected void doBusybox(File busybox, File reboot) {
-		File tmp = new File("/sbin/busybox");
-		File writableTest = new File("/system/simple_busybox_test");
+		File tmp = new File("/cache/busybox");
 		File target = new File("/system/xbin/busybox");
 		File lastApplet = new File("/system/xbin/zcat");
 		String ret;
-
-		Logcat.d("Remount /system writable");
-		shellExec(tmp.getParent(), null, "mount -o remount,rw /system",
-				"mount -o remount,rw /", "touch " + writableTest);
-		if (!writableTest.exists()) {
-			Logcat.e("ERROR MOUNT");
-			mApp.showToast(R.string.error_mount_rw, Toast.LENGTH_LONG);
-			return;
-		}
 
 		Logcat.d("Write temp busybox");
 		ret = shellExec(null, null, "cat \"" + busybox + "\" > " + tmp,
@@ -33,6 +23,18 @@ public class AsyncOperationNormal extends AsyncOperation {
 		if (!ret.startsWith("-rwxr-xr-x")) {
 			Logcat.e("ERROR CREATE TEMP BUSYBOX");
 			mApp.showToast(R.string.error_tmp_busybox, Toast.LENGTH_LONG);
+			return;
+		}
+
+		Logcat.d("Remount /system writable");
+		ret = shellExec(tmp.getParent(), null,
+				"mount -o remount,rw /system &> /dev/null",
+				"if [ $? -eq 0 ]; then", "echo good", "else",
+				"./busybox mount -o remount,rw /system &> /dev/null",
+				"if [ $? -eq 0 ]; then", "echo good", "fi", "fi");
+		if (!ret.contains("good")) {
+			Logcat.e("ERROR MOUNT");
+			mApp.showToast(R.string.error_mount_rw, Toast.LENGTH_LONG);
 			return;
 		}
 
@@ -80,8 +82,8 @@ public class AsyncOperationNormal extends AsyncOperation {
 		}
 
 		Logcat.d("Cleanup and remount /system readonly");
-		shellExec(tmp.getParent(), null, "rm " + writableTest + " " + tmp,
-				"sync", "mount -o remount,ro /system", "mount -o remount,ro /");
+		shellExec(tmp.getParent(), null, "mount -o remount,ro /system",
+				"./busybox mount -o remount,ro /system", "rm " + tmp, "sync");
 	}
 
 	@Override
