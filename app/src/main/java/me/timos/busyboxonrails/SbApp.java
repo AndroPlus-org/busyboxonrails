@@ -8,7 +8,7 @@ import android.app.Application;
 import android.os.Handler;
 import android.widget.Toast;
 
-import com.stericson.RootTools.RootTools;
+import com.stericson.RootShell.RootShell;
 
 public class SbApp extends Application {
 
@@ -29,7 +29,7 @@ public class SbApp extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		RootTools.handlerEnabled = false;
+		RootShell.handlerEnabled = false;
 		configLogger();
 
 		mHandler = new Handler();

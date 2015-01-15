@@ -1,0 +1,30 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "me.timos.busyboxonrails"
+        minSdkVersion 14
+        targetSdkVersion 21
+        versionCode 24
+        versionName "2.7.24"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile files('libs/br-1.3.jar')
+    compile files('libs/kellinwood-logging-lib-1.1.jar')
+    compile files('libs/zipio-lib-1.8.jar')
+    compile files('libs/zipsigner-lib-1.17.jar')
+    compile files('libs/RootShell-1.3.jar')
+}
