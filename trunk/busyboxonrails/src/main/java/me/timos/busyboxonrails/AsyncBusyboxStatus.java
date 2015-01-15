@@ -62,7 +62,8 @@ public class AsyncBusyboxStatus extends
                 File applet = new File(dir, appletName);
                 try {
                     if (applet.canExecute()
-                            && busyboxPaths.contains(applet.getCanonicalPath())) {
+                            && (busyboxPaths.contains(applet.getCanonicalPath()) ||
+                            applet.length() > 0)) {
                         mNotLinkedApplets.remove(appletName);
                     }
                 } catch (IOException e) {
