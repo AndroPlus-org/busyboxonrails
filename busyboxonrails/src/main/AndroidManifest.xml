@@ -1,5 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="me.timos.busyboxonrails">
+<manifest package="me.timos.busyboxonrails"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.ACCESS_SUPERUSER"/>
 

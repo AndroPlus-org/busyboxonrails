@@ -28,28 +28,11 @@ import static me.timos.busyboxonrails.Utility.uncheckedCast;
 public class ActivityMain extends ActionBarActivity implements OnClickListener,
         OnCheckedChangeListener {
 
-    public static class DialogFragmentList extends DialogFragment {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            Builder b = new Builder(getActivity());
-            b.setTitle(getArguments().getInt(DIALOG_TITLE));
-            b.setItems(getArguments().getStringArray(DIALOG_LIST), null);
-            return b.create();
-        }
-
-    }
-
-    public static enum ENUM_BB_STATUS {
-        CHECKING, NO_BB, BB_NOT_LINKED_APPLETS, BB_OK
-    }
-
     private static final String RUNNING_OPERATION = "running_operation";
     private static final String BB_INFO = "bb_info";
     private static final String BB_STATUS = "bb_status";
     private static final String NOT_LINKED_APPLETS = "not_linked_applets";
     private static final String SUPPORTED_APPLETS = "supported_applets";
-
     private RadioGroup mRadGrpMethod;
     private RadioGroup mRadGrpOp;
     private TextView mTxtBbStatus;
@@ -218,6 +201,22 @@ public class ActivityMain extends ActionBarActivity implements OnClickListener,
     public void setPreOperation() {
         mBtnGo.setEnabled(false);
         mBtnGo.setText(R.string.msg_working);
+    }
+
+    public static enum ENUM_BB_STATUS {
+        CHECKING, NO_BB, BB_NOT_LINKED_APPLETS, BB_OK
+    }
+
+    public static class DialogFragmentList extends DialogFragment {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            Builder b = new Builder(getActivity());
+            b.setTitle(getArguments().getInt(DIALOG_TITLE));
+            b.setItems(getArguments().getStringArray(DIALOG_LIST), null);
+            return b.create();
+        }
+
     }
 
 }
