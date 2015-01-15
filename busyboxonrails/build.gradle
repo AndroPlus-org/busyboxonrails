@@ -8,8 +8,8 @@ android {
         applicationId "me.timos.busyboxonrails"
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 26
-        versionName "2.7.26"
+        versionCode 28
+        versionName "2.7.28"
     }
 
     buildTypes {

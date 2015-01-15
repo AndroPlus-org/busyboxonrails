@@ -10,7 +10,7 @@
         android:label="@string/app_name">
         <activity
             android:name="me.timos.busyboxonrails.ActivityMain"
-            android:theme="@style/Theme.AppCompat.Light.DialogWhenLarge">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
