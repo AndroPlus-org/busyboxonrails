@@ -8,123 +8,123 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 
 public abstract class FragmentAsyncTask<Params, Progress, Result> extends
-		Fragment {
+        Fragment {
 
-	private static class InternalAsyncTask<X, Y, Z> extends AsyncTask<X, Y, Z> {
+    Result mResult;
+    boolean mIsPaused;
+    boolean mIsDone;
+    private Params[] mParams;
+    private InternalAsyncTask<Params, Progress, Result> mTask;
+    private String mTag;
 
-		private FragmentAsyncTask<X, Y, Z> mFragment;
+    public abstract Result doInBackground(Params... params);
 
-		public InternalAsyncTask(FragmentAsyncTask<X, Y, Z> f) {
-			mFragment = f;
-		}
+    public void doPostExecute() {
+        Fragment f;
+        if (getFragmentManager() != null
+                && (f = getFragmentManager().findFragmentByTag(mTag)) != null) {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.remove(f);
+            ft.commit();
+            onPostExecute(mResult);
+        }
+    }
 
-		@Override
-		protected Z doInBackground(X... params) {
-			return mFragment.doInBackground(params);
-		}
+    public void execute(FragmentManager fm, String tag, Params... params) {
+        setRetainInstance(true);
+        mParams = params;
+        mTag = tag;
+        if (mTag == null) {
+            mTag = getClass().getName();
+        }
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.add(this, mTag);
+        ft.commit();
+    }
 
-		@Override
-		protected void onPostExecute(Z result) {
-			mFragment.mResult = result;
-			mFragment.mIsDone = true;
-			if (!mFragment.mIsPaused) {
-				mFragment.doPostExecute();
-			}
-		}
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (mTask == null) {
+            mTask = new InternalAsyncTask<Params, Progress, Result>(this);
+            mTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, mParams);
+        }
+    }
 
-		@Override
-		protected void onPreExecute() {
-			mFragment.onPreExecute();
-		}
+    @Override
+    public void onResume() {
+        super.onResume();
+        mIsPaused = false;
+        if (mIsDone) {
+            doPostExecute();
+        }
+    }
 
-		@Override
-		protected void onProgressUpdate(Y... values) {
-			mFragment.onProgressUpdate(values);
-		}
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        mIsPaused = true;
+        super.onSaveInstanceState(outState);
+    }
 
-		public void publishStatus(Y... values) {
-			publishProgress(values);
-		}
+    @Override
+    public void onPause() {
+        mIsPaused = true;
+        super.onPause();
+    }
 
-	}
+    public void onPostExecute(Result result) {
+    }
 
-	private Params[] mParams;
-	private InternalAsyncTask<Params, Progress, Result> mTask;
-	Result mResult;
-	private String mTag;
-	boolean mIsPaused;
-	boolean mIsDone;
+    public void onPreExecute() {
+    }
 
-	public abstract Result doInBackground(Params... params);
+    public void onProgressUpdate(Progress... values) {
+    }
 
-	public void doPostExecute() {
-		Fragment f;
-		if (getFragmentManager() != null
-				&& (f = getFragmentManager().findFragmentByTag(mTag)) != null) {
-			FragmentTransaction ft = getFragmentManager().beginTransaction();
-			ft.remove(f);
-			ft.commit();
-			onPostExecute(mResult);
-		}
-	}
+    public void publishProgress(Progress... values) {
+        if (mTask == null) {
+            throw new IllegalStateException(
+                    "FragmentAsyncTask must be executed before calling this method");
+        }
+        mTask.publishStatus(values);
+    }
 
-	public void execute(FragmentManager fm, String tag, Params... params) {
-		setRetainInstance(true);
-		mParams = params;
-		mTag = tag;
-		if (mTag == null) {
-			mTag = getClass().getName();
-		}
-		FragmentTransaction ft = fm.beginTransaction();
-		ft.add(this, mTag);
-		ft.commit();
-	}
+    private static class InternalAsyncTask<X, Y, Z> extends AsyncTask<X, Y, Z> {
 
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		if (mTask == null) {
-			mTask = new InternalAsyncTask<Params, Progress, Result>(this);
-			mTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, mParams);
-		}
-	}
+        private FragmentAsyncTask<X, Y, Z> mFragment;
 
-	@Override
-	public void onPause() {
-		mIsPaused = true;
-		super.onPause();
-	}
+        public InternalAsyncTask(FragmentAsyncTask<X, Y, Z> f) {
+            mFragment = f;
+        }
 
-	public void onPostExecute(Result result) {
-	}
+        @Override
+        protected Z doInBackground(X... params) {
+            return mFragment.doInBackground(params);
+        }
 
-	public void onPreExecute() {
-	}
+        @Override
+        protected void onPreExecute() {
+            mFragment.onPreExecute();
+        }
 
-	public void onProgressUpdate(Progress... values) {
-	}
+        @Override
+        protected void onPostExecute(Z result) {
+            mFragment.mResult = result;
+            mFragment.mIsDone = true;
+            if (!mFragment.mIsPaused) {
+                mFragment.doPostExecute();
+            }
+        }
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		mIsPaused = false;
-		if (mIsDone) {
-			doPostExecute();
-		}
-	}
+        @Override
+        protected void onProgressUpdate(Y... values) {
+            mFragment.onProgressUpdate(values);
+        }
 
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		mIsPaused = true;
-		super.onSaveInstanceState(outState);
-	}
+        public void publishStatus(Y... values) {
+            publishProgress(values);
+        }
 
-	public void publishProgress(Progress... values) {
-		if (mTask == null) {
-			throw new IllegalStateException(
-					"FragmentAsyncTask must be executed before calling this method");
-		}
-		mTask.publishStatus(values);
-	}
+    }
 
 }

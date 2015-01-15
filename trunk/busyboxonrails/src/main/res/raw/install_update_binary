@@ -12,7 +12,7 @@ echo -n -e "ui_print\n" > /proc/self/fd/$2
 cleanup () {
     cd "$1"
     for i in ./*; do
-        if [ "`ls -l \"$i\"|grep busybox`" ]; then
+        if [ -L "$i" ] && ([ "`./busybox ls -l \"$i\"|./busybox grep busybox`" ] || [ ! -e "$i" ]); then
             rm "$i"
         fi
     done
