@@ -1,49 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:divider="?android:attr/dividerHorizontal"
-    android:dividerPadding="0dip"
-    android:orientation="vertical"
-    android:showDividers="middle" >
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_weight="1" >
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="vertical">
 
             <RadioGroup
                 android:id="@+id/radGrpOperation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checkedButton="@+id/radCleanupInstall"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/operation"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
 
                 <RadioButton
                     android:id="@id/radCleanupInstall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/cleanup_install" />
+                    android:text="@string/cleanup_install"/>
 
                 <RadioButton
                     android:id="@+id/radCleanup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/cleanup_only" />
+                    android:text="@string/cleanup_only"/>
             </RadioGroup>
 
             <RadioGroup
@@ -51,75 +50,74 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checkedButton="@+id/radNormal"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/method"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/txtInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/lbl_method_notice"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <RadioButton
                     android:id="@id/radNormal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/normal" />
+                    android:text="@string/normal"/>
 
                 <RadioButton
                     android:id="@+id/radRecovery"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/recovery" />
+                    android:text="@string/recovery"/>
             </RadioGroup>
 
             <TextView
                 android:id="@+id/txtBbStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
 
             <TextView
                 android:id="@+id/txtBbInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:visibility="gone" />
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/btnSupportedApplets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/supported_applets"
-                android:visibility="gone" />
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/btnNotlinkedApplets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/not_linked_applets"
-                android:visibility="gone" />
+                android:visibility="gone"/>
         </LinearLayout>
     </ScrollView>
 
     <LinearLayout
-        style="?android:attr/buttonBarStyle"
+        style="?attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layoutDirection="locale"
         android:measureWithLargestChild="true"
         android:minHeight="48dip"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <Button
-            style="?android:attr/buttonBarButtonStyle"
+            style="?attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
@@ -128,11 +126,11 @@
             android:minHeight="48dip"
             android:onClick="onExit"
             android:text="@string/exit"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
 
         <Button
             android:id="@+id/btnGo"
-            style="?android:attr/buttonBarButtonStyle"
+            style="?attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
@@ -142,8 +140,7 @@
             android:onClick="onGo"
             android:text="@string/install"
             android:textColor="#33b5e5"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
     </LinearLayout>
 
 </LinearLayout>
