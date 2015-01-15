@@ -139,7 +139,7 @@
             android:minHeight="48dip"
             android:onClick="onGo"
             android:text="@string/install"
-            android:textColor="#33b5e5"
+            android:textColor="#448aff"
             android:textStyle="bold"/>
     </LinearLayout>
 
