@@ -1,6 +1,8 @@
 <resources>
 
-    <string name="exit">Exit</string>
+    <string name="about_title">%1$s %2$s</string>
+    <string name="about_msg">\u00a9 bigeyes0x0 of Team Trickster&lt;br>Busybox version: 1.22.1&lt;br>Icon designed by &lt;a href="http://www.artua.com">Artua&lt;/a></string>
+    <string name="about">About</string>
     <string name="install">Install</string>
     <string name="cleanup">Cleanup</string>
     <string name="operation">Operation</string>

@@ -1,12 +1,14 @@
 package me.timos.busyboxonrails;
 
 import android.app.Application;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Handler;
 import android.widget.Toast;
 
 import com.stericson.RootShell.RootShell;
 
 import me.timos.br.BR;
+import me.timos.br.Logcat;
 import me.timos.br.enumerator.LogStorageType;
 import me.timos.br.enumerator.ReportMode;
 
@@ -35,6 +37,15 @@ public class SbApp extends Application {
         configLogger();
 
         mHandler = new Handler();
+    }
+
+    public String getAppVersion() {
+        try {
+            return getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        } catch (NameNotFoundException e) {
+            Logcat.e("Cannot get version", e);
+            return "";
+        }
     }
 
     public void showToast(int resId, int duration) {

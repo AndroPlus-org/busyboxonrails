@@ -7,6 +7,8 @@ import android.app.Fragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
@@ -118,8 +120,8 @@ public class ActivityMain extends ActionBarActivity implements OnClickListener,
         }
     }
 
-    public void onExit(View v) {
-        finish();
+    public void onAbout(View v) {
+        new DialogFragmentAbout().show(getFragmentManager(), null);
     }
 
     public void onGo(View v) {
@@ -199,12 +201,34 @@ public class ActivityMain extends ActionBarActivity implements OnClickListener,
     }
 
     public void setPreOperation() {
-        mBtnGo.setEnabled(false);
         mBtnGo.setText(R.string.msg_working);
+        mBtnGo.setEnabled(false);
     }
 
     public static enum ENUM_BB_STATUS {
         CHECKING, NO_BB, BB_NOT_LINKED_APPLETS, BB_OK
+    }
+
+    public static class DialogFragmentAbout extends DialogFragment {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            SbApp app = (SbApp) getActivity().getApplication();
+            Builder b = new Builder(getActivity());
+            b.setTitle(getString(R.string.about_title, getString(R.string.app_name),
+                    app.getAppVersion()));
+            b.setIcon(R.drawable.ic_launcher);
+            b.setMessage(R.string.about_msg);
+            return b.create();
+        }
+
+        @Override
+        public void onStart() {
+            super.onStart();
+            TextView txtMsg = (TextView) getDialog().findViewById(android.R.id.message);
+            txtMsg.setMovementMethod(LinkMovementMethod.getInstance());
+            txtMsg.setText(Html.fromHtml(getString(R.string.about_msg)));
+        }
     }
 
     public static class DialogFragmentList extends DialogFragment {

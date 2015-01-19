@@ -124,8 +124,8 @@
             android:layout_weight="1"
             android:maxLines="2"
             android:minHeight="48dip"
-            android:onClick="onExit"
-            android:text="@string/exit"
+            android:onClick="onAbout"
+            android:text="@string/about"
             android:textSize="14sp"/>
 
         <Button
