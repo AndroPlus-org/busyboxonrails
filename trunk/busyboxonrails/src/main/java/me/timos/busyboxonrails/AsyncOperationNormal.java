@@ -13,10 +13,16 @@ public class AsyncOperationNormal extends AsyncOperation {
 
     @Override
     protected void doBusybox(File busybox, File reboot) {
+        boolean lowSpace = false;
         File tmp = new File("/cache/busybox");
         File target = new File("/system/xbin/busybox");
         File lastApplet = new File("/system/xbin/zcat");
         String ret;
+
+        if (target.getFreeSpace() < 2097152) {
+            lowSpace = true;
+            target = new File("/data/local/busybox");
+        }
 
         Logcat.d("Write temp busybox");
         ret = shellExec(null, null, "cat \"" + busybox + "\" > " + tmp,
@@ -53,13 +59,25 @@ public class AsyncOperationNormal extends AsyncOperation {
                 "for i in /system/xbin/*; do",
                 "if [ -L \"$i\" ] && ([ \"`./busybox ls -l \\\"$i\\\"|./busybox grep busybox`\" ]" +
                         " || [ ! -e \"$i\" ]); then",
-                "echo $i", "rm \"$i\"", "fi", "done", "rm /system/xbin/busybox");
+                "echo $i", "rm \"$i\"", "fi", "done", "rm /system/xbin/busybox",
+                "rm /data/local/busybox");
         if (mOpId == R.id.radCleanupInstall) {
-            Logcat.d("Write busybox to /system/xbin");
-            shellExec(tmp.getParent(), null, "./busybox mkdir -p /system/xbin",
-                    "./busybox chown 0.2000 /system/xbin",
-                    "chmod 755 /system/xbin", "cat " + tmp + " > " + target,
-                    "chmod 755 " + target);
+            Logcat.d("Write busybox to device");
+            if (lowSpace) {
+                shellExec(tmp.getParent(), null, "./busybox mkdir -p /data/local",
+                        "./busybox chown 0.0 /data/local", "chmod 755 /data/local",
+                        "cat " + tmp + " > " + target, "chmod 755 " + target,
+                        "./busybox mkdir -p /system/xbin",
+                        "./busybox chown 0.2000 /system/xbin",
+                        "chmod 755 /system/xbin",
+                        "./busybox ln -s " + target + " /system/xbin/busybox");
+                target = new File("/system/xbin/busybox");
+            } else {
+                shellExec(tmp.getParent(), null, "./busybox mkdir -p /system/xbin",
+                        "./busybox chown 0.2000 /system/xbin",
+                        "chmod 755 /system/xbin", "cat " + tmp + " > " + target,
+                        "chmod 755 " + target);
+            }
             if (!target.canExecute()
                     || !checkFileIntegrity(mApp, target, getBusyboxResPath())) {
                 Logcat.e("ERROR WRITE BUSYBOX TO /system/xbin");
@@ -71,10 +89,10 @@ public class AsyncOperationNormal extends AsyncOperation {
             Logcat.d("Create applets");
             ret = shellExec(target.getParent(), null,
                     "./busybox --install -s .", "./busybox ls -l " + lastApplet);
-            if (ret.endsWith("zcat -> /system/xbin/busybox")) {
+            if (ret.endsWith("zcat -> /system/xbin/busybox") || ret.endsWith("zcat -> " +
+                    "/data/local/busybox")) {
                 Logcat.d("INSTALLATION SUCCEEDED");
-                mApp.showToast(R.string.msg_install_succeeded,
-                        Toast.LENGTH_LONG);
+                mApp.showToast(R.string.msg_install_succeeded, Toast.LENGTH_LONG);
             } else {
                 mApp.showToast(R.string.error_applets, Toast.LENGTH_LONG);
                 Logcat.e("FAILED creating applets \n" + ret);

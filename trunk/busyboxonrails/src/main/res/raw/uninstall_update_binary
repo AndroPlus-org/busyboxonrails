@@ -5,6 +5,7 @@
 # arg 3 is the zip file
 
 mount /system
+mount /data
 DIR="$PWD"
 
 echo -n -e 'ui_print Deleting old files...\n' > /proc/self/fd/$2
@@ -17,6 +18,7 @@ cleanup () {
         fi
     done
     rm busybox 2> /dev/null
+    rm /data/local/busybox 2> /dev/null
     cd "$DIR"
 }
 cleanup /system/bin
@@ -30,3 +32,4 @@ rm /cache/recovery/command &> /dev/null
 rm /cache/recovery/openrecoveryscript &> /dev/null
 
 umount /system
+umount /data

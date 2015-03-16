@@ -5,6 +5,7 @@
 # arg 3 is the zip file
 
 mount /system
+mount /data
 DIR="$PWD"
 
 echo -n -e 'ui_print Deleting old files...\n' > /proc/self/fd/$2
@@ -17,6 +18,7 @@ cleanup () {
         fi
     done
     rm busybox 2> /dev/null
+    rm /data/local/busybox 2> /dev/null
     cd "$DIR"
 }
 cleanup /system/bin
@@ -25,11 +27,19 @@ cleanup /system/xbin
 echo -n -e 'ui_print Extracting busybox...\n' > /proc/self/fd/$2
 echo -n -e "ui_print\n" > /proc/self/fd/$2
 cp /cache/busybox /system/xbin/busybox
-
-echo -n -e 'ui_print Setting permissions...\n' > /proc/self/fd/$2
-echo -n -e "ui_print\n" > /proc/self/fd/$2
-chown 0:2000 /system/xbin/busybox
-chmod 755 /system/xbin/busybox
+if [ $? -eq 0 ]; then
+    echo -n -e 'ui_print Setting permissions...\n' > /proc/self/fd/$2
+    echo -n -e "ui_print\n" > /proc/self/fd/$2
+    chown 0:2000 /system/xbin/busybox
+    chmod 755 /system/xbin/busybox
+else
+    rm /system/xbin/busybox 2> /dev/null
+    cp /cache/busybox /data/local/busybox
+    echo -n -e 'ui_print Setting permissions...\n' > /proc/self/fd/$2
+    echo -n -e "ui_print\n" > /proc/self/fd/$2
+    chmod 755 /data/local/busybox
+    ln -s /data/local/busybox /system/xbin/busybox
+fi
 
 echo -n -e 'ui_print Installing busybox applets...\n' > /proc/self/fd/$2
 echo -n -e "ui_print\n" > /proc/self/fd/$2
@@ -43,3 +53,4 @@ rm /cache/recovery/command &> /dev/null
 rm /cache/recovery/openrecoveryscript &> /dev/null
 
 umount /system
+umount /data
