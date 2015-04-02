@@ -19,11 +19,6 @@ public class AsyncOperationNormal extends AsyncOperation {
         File lastApplet = new File("/system/xbin/zcat");
         String ret;
 
-        if (target.getFreeSpace() < 2097152) {
-            lowSpace = true;
-            target = new File("/data/local/busybox");
-        }
-
         Logcat.d("Write temp busybox");
         ret = shellExec(null, null, "cat \"" + busybox + "\" > " + tmp,
                 "chmod 755 " + tmp, "ls -l " + tmp);
@@ -62,6 +57,11 @@ public class AsyncOperationNormal extends AsyncOperation {
                 "echo $i", "rm \"$i\"", "fi", "done", "rm /system/xbin/busybox",
                 "rm /data/local/busybox");
         if (mOpId == R.id.radCleanupInstall) {
+            if (new File("/system").getFreeSpace() < 2097152) {
+                lowSpace = true;
+                target = new File("/data/local/busybox");
+            }
+
             Logcat.d("Write busybox to device");
             if (lowSpace) {
                 shellExec(tmp.getParent(), null, "./busybox mkdir -p /data/local",
